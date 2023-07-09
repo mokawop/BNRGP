@@ -10,6 +10,7 @@ import java.util.UUID
 
 private const val DATABASE_NAME = "crime-database"
 //singleton used to pass data between classes
+//adding random
 class CrimeRepository private constructor(context: Context) {
 
     private val database: CrimeDatabase = Room
