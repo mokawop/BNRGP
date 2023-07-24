@@ -7,18 +7,18 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.criminalintent.databinding.FragmentCrimeListBinding
 import com.bignerdranch.android.criminalintent.databinding.ListItemCrimeBinding
+import java.util.UUID
 
 class CrimeHolder(
     private val binding: ListItemCrimeBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(crime: Crime){
+        fun bind(crime: Crime, onCrimeClicked: (crimeId: UUID) -> Unit){
             binding.crimeTitle.text = crime.title
             binding.crimeDate.text = crime.date.toString()
 
             //make a toast when you select a crime to expand
             binding.root.setOnClickListener{
-                Toast.makeText(binding.root.context,
-                                "${crime.title} clicked!",
-                                Toast.LENGTH_SHORT).show()
+                //navigates user to detail screen
+                 onCrimeClicked(crime.id)
             }
             //visibility based on whether crime is solved
             binding.crimeSolved.visibility = if(crime.isSolved) {
@@ -29,7 +29,7 @@ class CrimeHolder(
         }
     }
 
-class CrimeListAdapter (private val crimes: List<Crime>) : RecyclerView.Adapter<CrimeHolder>(){
+class CrimeListAdapter (private val crimes: List<Crime>, private val onCrimeCLicked: (crimeId: UUID) -> Unit) : RecyclerView.Adapter<CrimeHolder>(){
     //inflating the view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CrimeHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -42,7 +42,7 @@ class CrimeListAdapter (private val crimes: List<Crime>) : RecyclerView.Adapter<
     //fill in crime data that was selected
     override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
         val crime = crimes[position]
-        holder.bind(crime)
+        holder.bind(crime, onCrimeCLicked)
     }
 
 }
